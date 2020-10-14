@@ -1,0 +1,190 @@
+INTAL LIBRARY 
+
+INTRODUCTION
+
+
+What is an Intal?
+
+
+An intal is a non-negative integer of arbitrary length. In this mini project, the length of intal was upto 1000 digits. The intal is stored as a null terminated string and is represented as a string of decimal digits ( ‘0’ to ‘9’)
+
+
+
+
+The range of the int datatype in C is -32,768 to 32,767  and long int is -2,147,483,648 to 2,147,483,647. The range of long long int is -9,223,372,036,854,775,807 to 9,223,372,036,854,775,807 and range of unsigned long long int is 0 to 18,446,744,073,709,551,615.  However since intals are stored as null terminated strings, very large numbers which cannot be stored as even long long unsigned int, can be stored as an intal. 
+
+
+For some tasks or calculations, our requirements may be of integers which are very long, which may be out of range for even long long int data type to handle. For this reason, intals are necessary.
+
+
+
+
+APPROACH
+
+
+1. intal_add(const char* intal1, const char* intal2)
+        
+        First checking if the second intal is of longer length than the first intal, if it isn't, then we swap the two. The longest intal will be intal2. The process of adding the two intals is similar to how we add numbers on paper. The result intal can have a maximum length of length of the longest intal +1. 
+We start from the end index of the 2 intals to be added, and move from right to left. The values at the corresponding indexes are added and , and resulting sum is obtained. Carry is calculated by sum/10 and sum%10 is added to the result array at the appropriate position. The result is returned.
+
+
+
+
+2. intal_diff(const char *intal1, const char* intal2)
+         If both intal1 and intal2 are “0”, the function returns “0”. If intal2 is greater than intal1 ie intal_compare(intal1,intal2)=-1, then the intals are swapped. We start from the end index of intal1 and intal2. Keep subtracting the corresponding indexes of the intals, and if the difference is positive, add it to the appropriate index in the result string and carry =0.  If the difference is negative, then we add 10 and this is added to the appropriate index in the result string, and carry becomes 1.( If length of intal1 is greater, then the process is repeated but with only intal1 involved.)
+After subtraction is finished, we iterate through the result string and count the number of additional ‘0’’s at the beginning of the string. The number oF ‘0’’s is stored in variable k.  The result pointer is then moved to (result+k), which is returned.
+
+
+
+
+
+
+3. intal_compare(const char *intal1, const char* intal2)
+        
+        In the function, first the length of the 2 intals is checked. If the lengths are unequal, and intal1 is longer, then 1 is returned. If intal2 is longer, then -1 is returned. If the lengths are equal however, in a for loop, from i=0 to strlen(intal1)-1, we compare the values of the ith index of intal1 and intal2. If the value of the ith index of intal1 is greater than that of intal2, 1 is returned. If the value at ith index of intal2 is greater, then -1 is returned. Outside the loop, we return 0 indicating that the two intals are equal. 
+
+
+
+
+4. intal_multiply(const char *intal1, const char* intal2)
+
+
+The approach is to start from the last index of intal1 and multiply it with intal2. Then we multiply second last index of intal1 with intal2 and so on. All these multiplications are added. While adding, we put the i-th multiplication shifted by i. 
+If either of the 2 intals is “0”, the function returns “0”. The result string will have a maximum length of strlen(intal1) +strlen(intal2), and the memory is dynamically allocated and each index entry is initialized with ‘0’.  Moving from right to left across the intals,the value at the ith index of intal1, is multiplied with the every index from 0 to (strlen(intal2)-1)of intal2. The resultant product is obtained for every multiplication. This is added to the existing value at the  appropriate index in the result string. The result string is returned.
+
+
+
+
+
+
+5. char* intal_mod(const char* intal1, const char* intal2)
+
+
+        Here, intal1 % intal2 is to be found. If intal_compare(intal1,intal2) = -1, ie value of intal1 is less than that of intal2, then intal1 is returned as result. While the value of intal2 is less than the value of intal1, ‘0’’s are concatenated to intal2. 
+Intal1 and this new intal2, is now sent as arguments to the function repeated_subtraction. In this function, intal2 is repeatedly subtracted from intal1 until intal1 becomes less than or equal to intal2.  Repeated_subtraction() returns the value of intal1 after the repeated subtractions. The returned intal from repeated_subtraction() and the intal2 with one less concatenated ‘0’ is sent as argument to repeated_subtraction() again. This process continues until there are no extra previously concatenated  ‘0’’s to be removed. The final intal returned from repeated_subtraction() is the required answer of intal1%intal2.
+
+
+
+
+
+
+
+
+
+
+6. char* intal_pow(const char* intal1, unsigned int n)
+        
+        If intal1 is “0”, then “0” is returned. The result intal is initialized as “1”. If n is “0”, the function returns “1”. 
+The approach is based on..  To find intal1^n…
+If n ==0 : return 1 
+If n is even: intal1^n = (intal1 * intal1) ^ n/2
+If n is odd: intal1^n=  intal1*(intal1*intal1)^(n/2)  
+
+
+
+
+7. char* intal_gcd(const char* intal1, const char* intal2)
+
+
+        If intal1 is “0”, the value of intal2 is returned. If intal2 is “0”, the value of intal1 is returned. If both are “0” then “0” is returned as the GCD. 
+The approach is based on euclid’s approach. ( but in iterative form)
+if(n==0) : return m
+Else : return gcd(m%n,n)
+
+
+
+
+
+
+8. char* intal_fibonacci(unsigned int n)
+ 
+If n =0, “0” is returned. If n=1, “1” is returned. 
+Otherwise, a string a is intialized to “0” and string b initialized with “1”. Result is what will be returned from the function.  In a for loop from i=2 to n, in every iteration, the result is initialized to the intal_add(a,b). Then, a holds value of b and b holds value of result.  Once the for loop is complete, result is returned.
+
+
+
+
+9. char* intal_factorial(unsigned int n)
+        
+        If n =0 or n=1, the function returns “1”. 
+        Result is the intal to be returned from the function. Initially result is initialized to “1”. In the for loop from i=2 to n, in every iteration, result  = result*i. After the for loop is completed, result is returned as the required factorial.
+
+
+10. char* intal_bincoeff(unsigned int n, unsigned int k)
+        
+        If k=0, the function returns “1” since nC0 = 1.  The approach is to use Pascal’s identity ie C(n,k) = C(n-1,k) + C(n-1,k-1). An array of character strings ‘a’ is created of size k+1.   a[0] is initialized to “1” and every other array index i.e. from i=1 to k, a[i] is initialized to “0”. Each row of the Pascal triangle is found using the previous row of the table, by using the above identity. a[k] is returned as required binomial coefficient. 
+        
+
+
+11. int intal_max(char **arr, int n)
+        Index is the variable that holds the offset of the maximum element in arr. Result  is the string that holds the maximum element. Initially, index =0 and result = arr[0].
+In the for loop from i=1 to n-1, in every iteration ,if intal_compare(result,a[i])= -1 i.e. a[i] is greater than result, then result now holds a[i] and  index = i. At the end of the for loop, index is returned.
+
+
+
+
+
+
+
+
+12. int intal_max(char **arr, int n)
+
+
+Index is the variable that holds the offset of the minimum element in arr. Result is the string that holds the maximum element. Initially, index =0 and result = arr[0].
+In the for loop from i=1 to n-1, in every iteration ,if intal_compare(result,a[i])= 1 ie a[i] is lesser than result, then result now holds a[i] and  index = i. At the end of the for loop, index is returned.
+
+
+
+
+13. int intal_search(char **arr, int n, const char* key)
+
+
+        Variable i holds the index of the array where key is matched. Initially, i=0. In the while loop with the condition i!=n; in every iteration, if strcmp(arr[i],key)=0 ie the key and arr[i] are the same, then i is returned. After the while loop is completed, -1 is returned implying that the key was not found in the array.
+
+
+
+
+14. int intal_binsearch(char **arr, int n, const char* key)
+
+
+The variable res holds the index of the array where key is matched. Initially res=-1. Variable low is initially initialized to 0 and variable high is initialized to (n-1). In the while loop where the condition is low<=high, in every iteration, mid is calculated and mid = (low+high)/2 . If key and arr[middle] are the same, then res=mid and high = mid-1. If key is less than arr[mid] ie intal_compare(key,arr[mid])=-1, then high =mid-1. If key is greater than arr[mid] ie intal_compare(key,arr[mid])=1, then low=mid+1. 
+After the while loop is completed, res is returned. If the key is not found in arr, then res=-1 and -1 is returned.
+
+
+15. void intal_sort(char **arr, int n)
+The sorting algorithm chosen is merge sort. 
+
+
+merge() is the function used to merge two halves,assuming they are sorted.  It merges the two sorted sub-arrays into one. 
+
+
+In the mergesort_inter() function, the start and end indexes of the left and right array are found. mergesort_inter() is then called on the first half and then it is called on the second half of the array. The two sorted halves are then merged by calling merge(). intal_sort() calls the mergesort_inter() function.
+
+
+
+
+
+
+
+
+16. char* coin_row_problem(char **arr, int n)
+
+
+        If n = 0, the function returns arr[0]. Else, the idea is to derive a recurrence relation F(n), to return the maximum amount that can be picked up from the row of n coins with the given conditions that no two adjacent coins in the initial row can be picked up. The allowed coin row is partitioned into two groups i.e. the group that includes the last coin and the group without the last coin. 
+The largest amount we can obtain from the first group is arr[n] + F(n-2) i.e. the value of the nth coin plus the maximum amount that can be picked up  from the first (n-2) coins. 
+The maximum amount that can be obtained from the second group is equal to F(n-1). 
+
+
+The recurrence relation is hence, 
+F(n) = max{ ( arr[n] + F(n-2) ) , F(n-1) } for n>1
+F(1) = arr[0]
+
+
+
+
+
+
+FUTURE WORK
+
+
+The implementation of more functions such as Least Common Multiple of intals, division of an intal by another intal,logarithms of intals etc. 
